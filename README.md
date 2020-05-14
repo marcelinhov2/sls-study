@@ -1,6 +1,6 @@
 # sls-study
 
-![image](https://user-images.githubusercontent.com/232648/81972553-2649fd80-95f9-11ea-9194-b095379219d7.png)
+![image](https://user-images.githubusercontent.com/232648/81972854-9e182800-95f9-11ea-881b-c0ee972344ef.png)
 
 ## First Steps
 `git clone`
