@@ -8,7 +8,7 @@ service: underminer
 # frameworkVersion: "=X.X.X"
 
 custom:
-  AWS_ACCOUNT: 109983241277
+  AWS_ACCOUNT: XXXXXXXXXXXXXXXX
   BUCKET_NAME: underminer-${opt:stage}
   ATHENA_BUCKET_NAME: underminer-athena-${opt:stage}
   DATABASE_NAME: underminer_products_${opt:stage}
