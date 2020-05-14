@@ -6,8 +6,15 @@ const AWS = require('aws-sdk');
 const stepfunctions = new AWS.StepFunctions();
 
 module.exports.handler = async (event, context, callback) => {
+	const sleep = (delay) => {
+		const start = new Date().getTime();
+		while (new Date().getTime() < start + delay);
+	}
+	
 	const forEachPromise = async (items, fn) => {
-		return await batchPromises(200, items, fn)
+		const result = await batchPromises(200, items, fn)
+		await sleep(2000)
+		return result;
 	}
 	
 	const callStepFunction = async(url) => {
