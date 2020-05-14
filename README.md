@@ -1,5 +1,7 @@
 # sls-study
 
+![image](https://user-images.githubusercontent.com/232648/81972044-65c41a00-95f8-11ea-8a9c-be2bc416e351.png)
+
 ## First Steps
 `git clone`
 `yarn install`
