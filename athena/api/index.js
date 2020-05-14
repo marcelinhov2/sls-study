@@ -1,0 +1,1 @@
+module.exports.searchProduct = require('./endpoints/searchProduct');

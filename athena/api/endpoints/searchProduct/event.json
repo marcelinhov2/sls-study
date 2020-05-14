@@ -1,0 +1,137 @@
+{
+  "resource": "/searchProductByUrl",
+  "path": "/searchProductByUrl",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "BR",
+    "Host": "t5e6swhxof.execute-api.us-east-1.amazonaws.com",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "none",
+    "upgrade-insecure-requests": "1",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
+    "Via": "2.0 f8603c6a0a2e6da32898eb2fdb93a697.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "1ecVrq_6DamZGRYVUm1HhABG_MmxKsoUlYHiuLwzliUOvBbhpWu3ZQ==",
+    "X-Amzn-Trace-Id": "Root=1-5ebc511d-471e33a8566ef9f0c0c54fd0",
+    "X-Forwarded-For": "189.4.72.123, 64.252.179.85",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate, br"
+    ],
+    "Accept-Language": [
+      "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-Country": [
+      "BR"
+    ],
+    "Host": [
+      "t5e6swhxof.execute-api.us-east-1.amazonaws.com"
+    ],
+    "sec-fetch-dest": [
+      "document"
+    ],
+    "sec-fetch-mode": [
+      "navigate"
+    ],
+    "sec-fetch-site": [
+      "none"
+    ],
+    "upgrade-insecure-requests": [
+      "1"
+    ],
+    "User-Agent": [
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36"
+    ],
+    "Via": [
+      "2.0 f8603c6a0a2e6da32898eb2fdb93a697.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "1ecVrq_6DamZGRYVUm1HhABG_MmxKsoUlYHiuLwzliUOvBbhpWu3ZQ=="
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-5ebc511d-471e33a8566ef9f0c0c54fd0"
+    ],
+    "X-Forwarded-For": [
+      "189.4.72.123, 64.252.179.85"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": {
+    "product.maxPrice": 2000,
+    "source": "mercadolivre",
+    "product.name": "teste"
+  },
+  "multiValueQueryStringParameters": {
+    "url": [
+      "https://www.magazineluiza.com.br/tv-philco-led-39-ph39e60dsgwa-/p/5629738/et/elit/"
+    ]
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "resourceId": "95yu7a",
+    "resourcePath": "/searchProductByUrl",
+    "httpMethod": "GET",
+    "extendedRequestId": "MfGcoEUUIAMFfwQ=",
+    "requestTime": "13/May/2020:19:57:17 +0000",
+    "path": "/dev/searchProductByUrl",
+    "accountId": "109983241277",
+    "protocol": "HTTP/1.1",
+    "stage": "dev",
+    "domainPrefix": "t5e6swhxof",
+    "requestTimeEpoch": 1589399837542,
+    "requestId": "ef7180f5-a8e3-4ea4-8fc7-d12b53b9eb5a",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "sourceIp": "189.4.72.123",
+      "principalOrgId": null,
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36",
+      "user": null
+    },
+    "domainName": "t5e6swhxof.execute-api.us-east-1.amazonaws.com",
+    "apiId": "t5e6swhxof"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}

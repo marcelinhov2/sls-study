@@ -1,0 +1,178 @@
+service: underminer
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+custom:
+  AWS_ACCOUNT: 109983241277
+  BUCKET_NAME: underminer-${opt:stage}
+  ATHENA_BUCKET_NAME: underminer-athena-${opt:stage}
+  DATABASE_NAME: underminer_products_${opt:stage}
+  UNDERMINER_ARN: "arn:aws:states:${self:provider.region}:${self:custom.AWS_ACCOUNT}:stateMachine:${self:custom.BUCKET_NAME}"
+  stepFunctionsOffline:
+    SourceParser: sourceparser
+    CasasBahiaIntegration: casasbahia
+    MagazineLuizaIntegration: magazineluiza
+    MercadoLivreIntegration: mercadolivre
+    Consumer: consumer
+  s3:
+    host: localhost
+    directory: /tmp
+    port: 4569
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    BUCKET_NAME: ${self:custom.BUCKET_NAME}
+    ATHENA_BUCKET_NAME: ${self:custom.ATHENA_BUCKET_NAME}
+    DATABASE_NAME: ${self:custom.DATABASE_NAME}
+    UNDERMINER_ARN: ${self:custom.UNDERMINER_ARN}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "s3:GetBucketLocation"
+        - "s3:GetObject"
+        - "s3:ListBucket"
+        - "s3:ListBucketMultipartUploads"
+        - "s3:ListMultipartUploadParts"
+        - "s3:AbortMultipartUpload"
+        - "s3:CreateBucket"
+        - "s3:PutObject"
+      Resource:
+        - "arn:aws:s3:::${self:custom.BUCKET_NAME}/*"
+        - "arn:aws:s3:::${self:custom.BUCKET_NAME}"
+        - "arn:aws:s3:::${self:custom.ATHENA_BUCKET_NAME}"
+        - "arn:aws:s3:::${self:custom.ATHENA_BUCKET_NAME}/*"
+    - Effect: "Allow"
+      Action:
+        - "glue:*"
+      Resource:
+          - "*"
+    - Effect: "Allow"
+      Action:
+        - "athena:*"
+      Resource:
+        - "*"
+    - Effect: Allow
+      Action:
+        - states:StartExecution
+      Resource: "*"
+
+functions:
+  # Ignition
+  ignition:
+    handler: ignition/index.handler
+    timeout: 900
+    memorySize: 512
+
+  # Athena
+  athenaInit:
+    handler: athena/index.init
+    memorySize: 128
+
+  ## API
+  searchProduct:
+    handler: athena/api/index.searchProduct
+    timeout: 29 # optional, in seconds, default is 6
+    memorySize: 128
+    events:
+      - http:
+          path: searchProduct
+          method: GET
+
+  # Step Functions - Underminer
+  ## Source Parser
+  sourceparser:
+    handler: underminer/sourceparser/index.handler
+    timeout: 20
+    memorySize: 128
+  ## Integrations
+  casasbahia:
+    handler: underminer/integrations/index.casasbahia
+    timeout: 90
+    memorySize: 768
+  magazineluiza:
+    handler: underminer/integrations/index.magazineluiza
+    timeout: 60
+    memorySize: 128
+  mercadolivre:
+    handler: underminer/integrations/index.mercadolivre
+    timeout: 60
+    memorySize: 128
+
+  ## Consumer
+  consumer:
+    handler: underminer/consumer/index.handler
+    timeout: 20
+    memorySize: 128
+
+
+stepFunctions:
+  stateMachines:
+    underminer:
+      name: underminer-${opt:stage}
+      type: EXPRESS
+      events:
+        - http:
+            path: underminer
+            method: POST
+      definition:
+        Comment: "Data extraction flow"
+        StartAt: SourceParser
+        States:
+          SourceParser:
+            Type: Task
+            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-sourceparser"
+            Next: IntegrationChoice
+          IntegrationChoice:
+            Type: Choice
+            Choices:
+              - Variable: $.source
+                StringEquals: casasbahia
+                Next: CasasBahiaIntegration
+              - Variable: $.source
+                StringEquals: magazineluiza
+                Next: MagazineLuizaIntegration
+              - Variable: $.source
+                StringEquals: mercadolivre
+                Next: MercadoLivreIntegration
+          CasasBahiaIntegration:
+            Type: Task
+            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-casasbahia"
+            Next: Consumer
+          MagazineLuizaIntegration:
+            Type: Task
+            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-magazineluiza"
+            Next: Consumer
+          MercadoLivreIntegration:
+            Type: Task
+            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-mercadolivre"
+            Next: Consumer
+          Consumer:
+            Type: Task
+            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-consumer"
+            End: true
+
+resources:
+  Resources:
+    UnderminerBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.BUCKET_NAME}
+    AthenaBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.ATHENA_BUCKET_NAME}
+
+plugins:
+  - serverless-s3-local
+  - serverless-step-functions-offline
+  - serverless-offline
+  - serverless-pseudo-parameters
+  - serverless-step-functions
